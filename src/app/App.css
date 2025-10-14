@@ -1,0 +1,125 @@
+/* #root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+} */
+
+/* ---------------------------------------------------------------------
+   🌐 App-Level Styles (Overrides and Layout Helpers)
+------------------------------------------------------------------------ */
+
+/* Root container */
+#root {
+  @apply mx-auto px-4 sm:px-6 lg:px-8 w-full min-h-screen flex flex-col items-center justify-center bg-background text-foreground;
+}
+
+/* Logo container */
+.logo {
+  height: 5rem;
+  width: 5rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 9999px;
+  transition: transform 0.3s ease, filter 0.3s ease;
+  will-change: transform, filter;
+}
+
+.logo:hover {
+  filter: drop-shadow(0 0 1rem hsl(var(--primary) / 0.5));
+  transform: scale(1.05);
+}
+
+/* Optional React-specific hover tone */
+.logo.react:hover {
+  filter: drop-shadow(0 0 1rem hsl(var(--accent) / 0.5));
+}
+
+/* Optional logo spin animation — only if not reduced motion */
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Only animate for users who allow motion */
+@media (prefers-reduced-motion: no-preference) {
+  .logo.spin {
+    animation: logo-spin 20s linear infinite;
+  }
+}
+
+/* Card container */
+.card {
+  @apply bg-card text-card-foreground rounded-2xl shadow-sm p-6 my-4 max-w-md w-full hover-lift;
+}
+
+/* Subtle text tone for documentation links or descriptions */
+.read-the-docs {
+  color: hsl(var(--muted-foreground));
+  font-size: 0.9rem;
+  @apply mt-2;
+}
+
+/* Button-like links (demo friendly) */
+a.button-link {
+  @apply inline-flex items-center justify-center px-4 py-2 mt-4 text-sm font-medium rounded-lg 
+         bg-primary text-primary-foreground hover:bg-primary-hover transition-all duration-200 button-press;
+}
+
+/* Responsive layout enhancements */
+@media (min-width: 768px) {
+  #root {
+    @apply px-8;
+  }
+
+  .card {
+    @apply p-8;
+  }
+}
+
+/* Accessibility: high contrast support */
+@media (prefers-contrast: high) {
+  .card {
+    @apply border-2 border-foreground;
+  }
+}

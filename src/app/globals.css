@@ -1,0 +1,424 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------------------
+   🎨 Design System - Healthcare Professional UI Palette (HSL Only)
+------------------------------------------------------------------------ */
+
+@layer base {
+  :root {
+    --background: 0 0% 98%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 217 91% 50%;
+
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --secondary-hover: 220 14% 92%;
+
+    --muted: 220 14% 96%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 220 14% 94%;
+    --accent-foreground: 222 47% 11%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 217 91% 60%;
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-accent: 220 14% 96%;
+
+    --chat-user-bubble: 217 91% 60%;
+    --chat-user-foreground: 0 0% 100%;
+    --chat-assistant-bubble: 220 14% 96%;
+    --chat-assistant-foreground: 222 47% 11%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    color-scheme: dark;
+
+    --background: 222 47% 6%;
+    --foreground: 210 40% 98%;
+
+    --card: 222 47% 8%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222 47% 8%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 217 91% 70%;
+
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+    --secondary-hover: 217 33% 22%;
+
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 217 33% 20%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 63% 40%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 217 91% 60%;
+
+    --sidebar-background: 222 47% 8%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-border: 217 33% 17%;
+    --sidebar-accent: 217 33% 17%;
+
+    --chat-user-bubble: 217 91% 60%;
+    --chat-user-foreground: 0 0% 100%;
+    --chat-assistant-bubble: 217 33% 17%;
+    --chat-assistant-foreground: 210 40% 98%;
+  }
+
+  /* Base typography & background */
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    @apply font-sans antialiased;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: transparent;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   ⚡ Interactive Elements & Motion
+------------------------------------------------------------------------ */
+@layer base {
+  /* Add comprehensive theme transition to root elements */
+  *,
+  *::before,
+  *::after {
+    transition: 
+      background-color 300ms cubic-bezier(0.4, 0, 0.2, 1),
+      color 300ms cubic-bezier(0.4, 0, 0.2, 1),
+      border-color 300ms cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1),
+      opacity 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Prevent layout-affecting properties from animating */
+  * {
+    transition-property: background-color, color, border-color, box-shadow, opacity !important;
+  }
+
+  /* Ensure consistent timing for all interactive elements */
+  button, a, input, select, textarea {
+    transition: 
+      background-color 150ms cubic-bezier(0.4, 0, 0.2, 1),
+      color 150ms cubic-bezier(0.4, 0, 0.2, 1),
+      border-color 150ms cubic-bezier(0.4, 0, 0.2, 1),
+      transform 120ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+@layer base {
+  /* Subtle transitions for interactive UI components */
+  button,
+  a,
+  input,
+  select,
+  textarea {
+    @apply transition-all duration-200 ease-out;
+  }
+
+  button:hover,
+  a:hover {
+    @apply brightness-95;
+  }
+
+  .dark button:hover,
+  .dark a:hover {
+    @apply brightness-110;
+  }
+
+  /* Disable animations for users who prefer reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      transition: none !important;
+      animation-duration: 0s !important;
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------
+   🧰 Utility Enhancements
+------------------------------------------------------------------------ */
+
+@layer utilities {
+  /* Smooth element entry */
+  .fade-in {
+    animation: fadeIn 0.3s ease-in-out both;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Lift & shadow micro-interaction */
+  .hover-lift {
+    @apply transition-transform duration-200 hover:scale-105 hover:shadow-md;
+  }
+
+  /* Press effect for tactile feedback */
+  .button-press {
+    @apply active:scale-95 transition-transform duration-100;
+  }
+
+  /* Scrollbar styling */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: hsl(var(--muted));
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 9999px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground));
+  }
+
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--border) / 0.6) transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: hsl(var(--border) / 0.6);
+    border-radius: 9999px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.6);
+  }
+
+  /* Focus ring for accessibility */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+
+  /* High-contrast support */
+  @media (prefers-contrast: high) {
+    * {
+      @apply border border-foreground;
+    }
+  }
+
+  /* Optional delay utilities */
+  .delay-150 {
+    transition-delay: 150ms;
+  }
+}
+
+/* View Transitions API animations */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 200ms;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Circle expand animation for theme toggle */
+  ::view-transition-new(root) {
+    clip-path: circle(0% at 50% 50%);
+    animation-name: reveal-circle;
+  }
+
+  ::view-transition-old(root) {
+    animation-name: fade-out;
+  }
+
+  @keyframes reveal-circle {
+    from {
+      clip-path: circle(0% at 50% 50%);
+    }
+    to {
+      clip-path: circle(150% at 50% 50%);
+    }
+  }
+
+  @keyframes fade-out {
+    to {
+      opacity: 0;
+    }
+  }
+}
+
+
+@layer utilities {
+  /* Disable problematic transitions temporarily */
+  .no-transition {
+    transition: none !important;
+  }
+
+  /* Force GPU acceleration for smoother animations */
+  .gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+
+  /* Smooth theme transition class */
+  .theme-transitioning * {
+    transition: 
+      background-color 180ms cubic-bezier(0.4, 0, 0.2, 1),
+      color 180ms cubic-bezier(0.4, 0, 0.2, 1),
+      border-color 180ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+}
+/* Always show the native date picker icon on desktop & mobile */
+input[type="date"] {
+  /* make room for the icon */
+  padding-right: 3rem;
+  position: relative;
+}
+/* Reduce padding on large screens (matches lg:pr-8 = 2rem) */
+@media (min-width: 1024px) {
+  input[type="date"] {
+    padding-right: 2rem;
+  }
+}
+/* Style the native calendar indicator */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 1;              /* ensure it’s visible */
+  color: currentColor;     /* match input text color */
+  cursor: pointer;
+  /* size if necessary */
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Also enable for Firefox */
+input[type="date"]::-moz-calendar-picker-indicator {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 1;
+  cursor: pointer;
+}
+
+/* Ensure the date input itself is positioned for the absolute indicator */
+input[type="date"] {
+  position: relative;
+}
+/* Fix focus rings and multiselect styling */
+*:focus,
+*:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+}
+
+/* Multi-select container fixes */
+.multiselect-container {
+  height: 2rem !important;
+  font-size: 0.75rem !important;
+  min-width: 0;
+}
+
+/* Fix overflow issues */
+.multiselect-selected-items {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  min-width: 0;
+  flex: 1;
+}
+
+.multiselect-item {
+  max-width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 0;
+}
+
+/* Consistent placeholder styling */
+.multiselect-placeholder {
+  font-size: 0.75rem !important;
+  color: #6b7280 !important;
+  font-weight: normal !important;
+}
+
+/* Fix dropdown positioning */
+.multiselect-dropdown {
+  z-index: 50;
+  min-width: 300px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+/* Remove nested button issues */
+.multiselect-remove-button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Prevent hydration issues */
+.multiselect-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  cursor: pointer;
+}
