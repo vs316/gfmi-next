@@ -69,18 +69,19 @@
 //     </header>
 //   );
 // };
+"use client";
 import { Moon, Sun, MessageSquarePlus, SlidersHorizontal } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useTheme } from "@/components/ThemeProvider";
+import { Button } from "@/app/components/ui/button";
+import { useTheme } from "@/app/components/ThemeProvider";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { MobileFilterSheet } from "@/components/MobileFilterSheet";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Filters } from "@/types/filters";
+} from "@/app/components/ui/dropdown-menu";
+import { MobileFilterSheet } from "@/app/components/MobileFilterSheet";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/app/components/ui/tooltip";
+import { Filters } from "@/app/types/filters";
 interface HeaderProps {
   filters?: Filters;
   setFilters?: (filters: Filters | ((prev: Filters) => Filters)) => void;

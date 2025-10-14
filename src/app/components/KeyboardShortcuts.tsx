@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useRef } from "react";
 import { toast } from "sonner";
 
@@ -22,9 +23,16 @@ export const KeyboardShortcuts = ({
   
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Skip if user is typing in an input field
+      const target = e.target as HTMLElement;
+      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.contentEditable === 'true') {
+        return;
+      }
+
       // Escape to close dialogs/modals
       if (e.key === "Escape") {
         onEscape?.();
+        toast.info("Closed dialogs/modals", { duration: 1500 });
         return;
       }
 
@@ -32,6 +40,7 @@ export const KeyboardShortcuts = ({
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
         onOpenCommandPalette?.();
+        toast.success("Command palette opened", { duration: 2000 });
         return;
       }
 
@@ -39,18 +48,24 @@ export const KeyboardShortcuts = ({
       if ((e.metaKey || e.ctrlKey) && e.key === "i") {
         e.preventDefault();
         onFocusInput?.();
+        toast.success("Input focused", { duration: 1500 });
+        return;
       }
 
       // Command/Ctrl + E to export conversation
       if ((e.metaKey || e.ctrlKey) && e.key === "e") {
         e.preventDefault();
         onExportConversation?.();
+        toast.success("Conversation exported", { duration: 2000 });
+        return;
       }
 
       // Command/Ctrl + Shift + C to clear filters
       if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === "C") {
         e.preventDefault();
         onClearFilters?.();
+        toast.success("Filters cleared", { duration: 2000 });
+        return;
       }
 
       // F1 for help (alternative)
@@ -64,6 +79,7 @@ export const KeyboardShortcuts = ({
       if ((e.metaKey || e.ctrlKey) && e.key === "/") {
         e.preventDefault();
         showHelpToast();
+        return;
       }
     };
 
@@ -105,8 +121,8 @@ export const KeyboardShortcuts = ({
       );
     };
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
   }, [onClearFilters, onExportConversation, onFocusInput, onOpenCommandPalette, onEscape]);
 
   return null;

@@ -1,6 +1,7 @@
+"use client";
 import { useState, useEffect } from "react";
 import { Keyboard, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/app/components/ui/button";
 
 export const ShortcutsHint = () => {
   const [isVisible, setIsVisible] = useState(false);

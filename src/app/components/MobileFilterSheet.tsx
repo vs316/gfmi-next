@@ -1,19 +1,20 @@
+"use client";
 import { useState } from "react";
 import { RotateCcw, Save, Download, SlidersHorizontal } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
-import { DateRangeFilter } from "@/components/filters/DateRangeFilter";
-import { TeamOrganizationFilter } from "@/components/filters/TeamOrganizationFilter";
-import { GeographicFilter } from "@/components/filters/GeographicFilter";
-import { HealthcareFilter } from "@/components/filters/HealthcareFilter";
-import { EventEngagementFilter } from "@/components/filters/EventEngagementFilter";
-import { SurveyFilter } from "@/components/filters/SurveyFilter";
-import { TherapeuticFilter } from "@/components/filters/TherapeuticFilter";
-import { ExportDatasetDialog } from "@/components/ExportDatasetDialog";
+import { Button } from "@/app/components/ui/button";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/app/components/ui/sheet";
+import { ScrollArea } from "@/app/components/ui/scroll-area";
+import { Separator } from "@/app/components/ui/separator";
+import { DateRangeFilter } from "@/app/components/filters/DateRangeFilter";
+import { TeamOrganizationFilter } from "@/app/components/filters/TeamOrganizationFilter";
+import { GeographicFilter } from "@/app/components/filters/GeographicFilter";
+import { HealthcareFilter } from "@/app/components/filters/HealthcareFilter";
+import { EventEngagementFilter } from "@/app/components/filters/EventEngagementFilter";
+import { SurveyFilter } from "@/app/components/filters/SurveyFilter";
+import { TherapeuticFilter } from "@/app/components/filters/TherapeuticFilter";
+import { ExportDatasetDialog } from "@/app/components/ExportDatasetDialog";
 import { toast } from "sonner";
-import { Filters } from "@/types/filters";
+import { Filters } from "@/app/types/filters";
 
 interface MobileFilterSheetProps {
  filters: Filters;

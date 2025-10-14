@@ -213,10 +213,12 @@
 //     </Dialog>
 //   );
 // }
+"use client";
 import { useEffect, useState, useCallback } from "react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { Dialog, DialogContent, DialogTitle } from "@/app/components/ui/dialog";
+import { Input } from "@/app/components/ui/input";
+import { ScrollArea } from "@/app/components/ui/scroll-area";
+import { VisuallyHidden} from "@radix-ui/react-visually-hidden";
 import {
   Search,
   MessageSquare,
@@ -239,7 +241,7 @@ import {
   Save,
   Upload,
 } from "lucide-react";
-import { useTheme } from "@/components/ThemeProvider";
+import { useTheme } from "@/app/components/ThemeProvider";
 import { toast } from "sonner";
 
 interface CommandAction {
@@ -617,6 +619,10 @@ export function CommandPalette({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl p-0 gap-0">
+        <VisuallyHidden>
+          <DialogTitle>Command Palette</DialogTitle>
+        </VisuallyHidden>
+        
         <div className="flex items-center border-b px-4">
           <Search className="mr-2 h-4 w-4 shrink-0 text-muted-foreground" />
           <Input

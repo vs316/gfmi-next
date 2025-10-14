@@ -22,9 +22,9 @@ export class MockApiClient {
   constructor() {
     // Enable mock when API_BASE_URL points to localhost or when explicitly enabled
     this.isEnabled = 
-      import.meta.env.VITE_API_BASE_URL?.includes('localhost') ||
-      import.meta.env.VITE_ENABLE_MOCKS === 'true' ||
-      import.meta.env.MODE === 'development';
+      process.env.NEXT_PUBLIC_API_URL?.includes('localhost') ||
+      process.env.NEXT_PUBLIC_ENABLE_MOCKS === 'true' ||
+      process.env.NODE_ENV === 'development';
   }
 
   async get(endpoint: string, params?: any) {

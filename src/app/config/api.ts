@@ -1,17 +1,17 @@
-import { mockApi } from '@/mocks/api/mockAPI';
+import { mockApi } from '@/app/mocks/api/mockAPI';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
-const IS_DEV = import.meta.env.DEV;
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+const IS_DEV = process.env.NODE_ENV;
 const USE_MOCKS = 
-  import.meta.env.VITE_ENABLE_MOCKS === 'true' || 
+  process.env.NEXT_PUBLIC_ENABLE_MOCKS === 'true' || 
   API_BASE_URL.includes('localhost') ||
-  import.meta.env.MODE === 'development';
+  process.env.NODE_ENV === 'development';
 
 export const apiConfig = {
   baseURL: API_BASE_URL,
   isDevelopment: IS_DEV,
   useMocks: USE_MOCKS,
-  debugMode: import.meta.env.VITE_DEBUG_MODE === 'true',
+  debugMode: process.env.NEXT_PUBLIC_DEBUG_MODE === 'true',
 };
 
 // Enhanced API utility with automatic mock fallback

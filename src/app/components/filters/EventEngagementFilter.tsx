@@ -1,5 +1,6 @@
-import { MultiSelect } from "@/components/ui/multi-select";
-import { Filters } from "@/types/filters";
+"use client";
+import { MultiSelect } from "@/app/components/ui/multi-select";
+import { Filters } from "@/app/types/filters";
 
 interface EventEngagementFilterProps {
   filters: Filters;

@@ -177,14 +177,15 @@
 //     </div>
 //   );
 // };
+"use client";
 import { User, MessageSquare, FileText, Image as ImageIcon, Copy, ThumbsUp, ThumbsDown, ExternalLink } from "lucide-react";
 import { format } from "date-fns";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/app/components/ui/button";
 import { toast } from "sonner";
 import { useState } from "react";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { MarkdownComponentProps } from "@/types/filters";
+import { MarkdownComponentProps } from "@/app/types/filters";
 
 interface FileWithPreview extends File {
   id: string;

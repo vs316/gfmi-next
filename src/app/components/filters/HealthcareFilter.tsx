@@ -1,5 +1,5 @@
-import { MultiSelect } from "@/components/ui/multi-select";
-import { Filters } from "@/types/filters";
+import { MultiSelect } from "@/app/components/ui/multi-select";
+import { Filters } from "@/app/types/filters";
 
 interface HealthcareFilterProps {
   filters: Filters;

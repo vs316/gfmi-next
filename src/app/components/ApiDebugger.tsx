@@ -58,7 +58,7 @@
 // };
 
 import React from 'react';
-import { useHealthCheck, useFilterOptions } from '@/hooks/useSurveyData';
+import { useHealthCheck, useFilterOptions } from '@/app/hooks/useSurveyData';
 
 export const ApiDebugger = () => {
   const { data: healthData, error: healthError, isLoading: healthLoading } = useHealthCheck();
@@ -92,7 +92,7 @@ export const ApiDebugger = () => {
         </div>
         
         <div>
-          <strong>API Base URL:</strong> {import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1'}
+          <strong>API Base URL:</strong> {process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api/v1'}
         </div>
         
         {filterData && (

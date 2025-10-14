@@ -97,10 +97,10 @@
 //   });
 // };
 
-
+"use client";
 import { useQuery } from '@tanstack/react-query';
-import { fetchFromApi } from '@/config/api';
-import { SurveyFilters } from '@/types/survey';
+import { fetchFromApi } from '@/app/config/api';
+import { SurveyFilters } from '@/app/types/survey';
 
 export const useHealthCheck = () => {
   return useQuery({

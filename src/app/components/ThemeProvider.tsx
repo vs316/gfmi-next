@@ -87,6 +87,7 @@
 
 //   return context;
 // };
+"use client";
 import { createContext, useContext, useEffect, useState } from "react";
 
 type Theme = "dark" | "light" | "system";
@@ -122,29 +123,95 @@ export function ThemeProvider({
   storageKey = "vite-ui-theme",
   ...props
 }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(
-    () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
-  );
+  // const [theme, setTheme] = useState<Theme>(
+  //   () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
+  // );
 
-  // Initialize the animation hook
-  // const { 
-  //   ref: animationRef, 
-  //   toggleSwitchTheme, 
-  //   isDarkMode 
-  // } = useModeAnimation({
-  //   animationType: ThemeAnimationType.CIRCLE, // or 'blur-circle' or 'qr-scan'
-  //   duration: 400,
-  //   easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
-  //   globalClassName: 'dark',
-  //   onDarkModeChange: (isDark: boolean) => {
-  //     // This callback will be triggered by the animation hook
-  //     const newTheme = isDark ? 'dark' : 'light';
-  //     localStorage.setItem(storageKey, newTheme);
-  //     setTheme(newTheme);
+  // // Initialize the animation hook
+  // // const { 
+  // //   ref: animationRef, 
+  // //   toggleSwitchTheme, 
+  // //   isDarkMode 
+  // // } = useModeAnimation({
+  // //   animationType: ThemeAnimationType.CIRCLE, // or 'blur-circle' or 'qr-scan'
+  // //   duration: 400,
+  // //   easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+  // //   globalClassName: 'dark',
+  // //   onDarkModeChange: (isDark: boolean) => {
+  // //     // This callback will be triggered by the animation hook
+  // //     const newTheme = isDark ? 'dark' : 'light';
+  // //     localStorage.setItem(storageKey, newTheme);
+  // //     setTheme(newTheme);
+  // //   }
+  // // });
+
+  // const applyTheme = (newTheme: Theme) => {
+  //   const root = window.document.documentElement;
+    
+  //   root.classList.remove("light", "dark");
+    
+  //   if (newTheme === "system") {
+  //     const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
+  //       .matches
+  //       ? "dark"
+  //       : "light";
+  //     root.classList.add(systemTheme);
+  //   } else {
+  //     root.classList.add(newTheme);
   //   }
-  // });
+  // };
+
+  // useEffect(() => {
+  //   applyTheme(theme);
+  // }, [theme]);
+
+  // const value = {
+  //   theme,
+  //   // animationRef,
+  //   setTheme: (newTheme: Theme) => {
+  //     // For system theme or when switching to system, use fallback
+  //     if (newTheme === "system" || theme === "system") {
+  //       // Use View Transitions API if supported
+  //       if (supportsViewTransitions()) {
+  //         (document as Document & { startViewTransition: (callback: () => void) => void }).startViewTransition(() => {
+  //           localStorage.setItem(storageKey, newTheme);
+  //           setTheme(newTheme);
+  //           applyTheme(newTheme);
+  //         });
+  //       } else {
+  //         localStorage.setItem(storageKey, newTheme);
+  //         setTheme(newTheme);
+  //       }
+  //     } else {
+  //       // For direct light/dark switching, use the animation hook
+  //       // if ((newTheme === "dark" && !isDarkMode) || (newTheme === "light" && isDarkMode)) {
+  //       //   toggleSwitchTheme();
+  //       // }
+  //       localStorage.setItem(storageKey, newTheme);
+  //       setTheme(newTheme);
+  //     }
+  //   },
+  // };
+   const [theme, setTheme] = useState<Theme>(defaultTheme);
+  const [mounted, setMounted] = useState(false);
+
+  // Initialize theme from localStorage after component mounts
+  useEffect(() => {
+    try {
+      const storedTheme = localStorage.getItem(storageKey) as Theme;
+      if (storedTheme) {
+        setTheme(storedTheme);
+      }
+    } catch (error) {
+      // localStorage not available, use default theme
+      console.warn('localStorage not available, using default theme');
+    }
+    setMounted(true);
+  }, [storageKey]);
 
   const applyTheme = (newTheme: Theme) => {
+    if (typeof window === 'undefined') return;
+    
     const root = window.document.documentElement;
     
     root.classList.remove("light", "dark");
@@ -161,36 +228,40 @@ export function ThemeProvider({
   };
 
   useEffect(() => {
-    applyTheme(theme);
-  }, [theme]);
+    if (mounted) {
+      applyTheme(theme);
+    }
+  }, [theme, mounted]);
 
   const value = {
     theme,
-    // animationRef,
     setTheme: (newTheme: Theme) => {
-      // For system theme or when switching to system, use fallback
-      if (newTheme === "system" || theme === "system") {
-        // Use View Transitions API if supported
-        if (supportsViewTransitions()) {
-          (document as Document & { startViewTransition: (callback: () => void) => void }).startViewTransition(() => {
-            localStorage.setItem(storageKey, newTheme);
-            setTheme(newTheme);
-            applyTheme(newTheme);
-          });
-        } else {
-          localStorage.setItem(storageKey, newTheme);
-          setTheme(newTheme);
-        }
-      } else {
-        // For direct light/dark switching, use the animation hook
-        // if ((newTheme === "dark" && !isDarkMode) || (newTheme === "light" && isDarkMode)) {
-        //   toggleSwitchTheme();
-        // }
+      try {
         localStorage.setItem(storageKey, newTheme);
+      } catch (error) {
+        console.warn('Failed to save theme to localStorage');
+      }
+
+      // Use View Transitions API if supported
+      if (supportsViewTransitions()) {
+        (document as Document & { startViewTransition: (callback: () => void) => void }).startViewTransition(() => {
+          setTheme(newTheme);
+          applyTheme(newTheme);
+        });
+      } else {
         setTheme(newTheme);
       }
     },
   };
+
+  // Prevent hydration mismatch by not rendering until mounted
+  if (!mounted) {
+    return (
+      <ThemeProviderContext.Provider value={initialState}>
+        {children}
+      </ThemeProviderContext.Provider>
+    );
+  }
 
   return (
     <ThemeProviderContext.Provider {...props} value={value}>

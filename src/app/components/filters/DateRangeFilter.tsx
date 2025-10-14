@@ -1,9 +1,10 @@
+"use client";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button } from "@/app/components/ui/button";
+import { Input } from "@/app/components/ui/input";
+import { Label } from "@/app/components/ui/label";
 import { Plus } from "lucide-react";
-import { Filters } from "@/types/filters";
+import { Filters } from "@/app/types/filters";
 
 interface DateRangeFilterProps {
   filters: Filters;

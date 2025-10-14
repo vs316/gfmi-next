@@ -1,14 +1,14 @@
 import * as React from "react";
 import { Check, ChevronDown, Search, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/app/components/ui/button";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
+} from "@/app/components/ui/popover";
+import { Input } from "@/app/components/ui/input";
+import { Badge } from "@/app/components/ui/badge";
 
 export interface Option {
   value: string;
@@ -69,14 +69,12 @@ export function MultiSelect({
                     : `${selected.length} selected`}
                 </span>
                 {selected.length > 0 && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-4 w-4 p-0 hover:bg-transparent"
+                  <div
+                    className="ml-1 h-4 w-4 flex items-center justify-center hover:bg-muted rounded cursor-pointer"
                     onClick={handleClear}
                   >
                     <X className="h-3 w-3" />
-                  </Button>
+                  </div>
                 )}
               </>
             ) : (

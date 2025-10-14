@@ -134,14 +134,15 @@
 //     </Card>
 //   );
 // };
-import { useSurveys } from "@/hooks/useSurveyData";
-import { SurveyFilters } from "@/types/survey";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { LoadingSkeleton } from "@/components/LoadingSkeleton";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
+"use client";
+import { useSurveys } from "@/app/hooks/useSurveyData";
+import { SurveyFilters } from "@/app/types/survey";
+import { Card, CardContent, CardHeader, CardTitle } from "@/app/components/ui/card";
+import { Badge } from "@/app/components/ui/badge";
+import { Button } from "@/app/components/ui/button";
+import { LoadingSkeleton } from "@/app/components/LoadingSkeleton";
+import { ScrollArea } from "@/app/components/ui/scroll-area";
+import { Separator } from "@/app/components/ui/separator";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
 

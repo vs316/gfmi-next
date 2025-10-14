@@ -131,10 +131,11 @@
 //     </div>
 //   );
 // };
-import { MultiSelect } from "@/components/ui/multi-select";
-import { Filters } from "@/types/filters";
-import { useFilterOptions } from "@/hooks/useSurveyData";
-import { LoadingSkeleton } from "@/components/LoadingSkeleton";
+"use client";
+import { MultiSelect } from "@/app/components/ui/multi-select";
+import { Filters } from "@/app/types/filters";
+import { useFilterOptions } from "@/app/hooks/useSurveyData";
+import { LoadingSkeleton } from "@/app/components/LoadingSkeleton";
 import { useMemo, useEffect } from "react";
 
 interface GeographicFilterProps {

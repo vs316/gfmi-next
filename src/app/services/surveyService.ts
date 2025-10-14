@@ -50,7 +50,7 @@ export class SurveyService {
   // Health check
   static async healthCheck() {
     const response = await api.get('/health', { 
-      baseURL: 'http://localhost:8000' // Direct health endpoint
+      baseURL: 'http://localhost:3000' // Direct health endpoint
     });
     return response.data;
   }

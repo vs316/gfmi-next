@@ -1,21 +1,21 @@
-
+"use client";
 import { useState, memo, useMemo } from "react";
-import { ChatArea } from "@/components/ChatArea";
-import { Header } from "@/components/Header";
-import { ThemeProvider } from "@/components/ThemeProvider";
-import { KeyboardShortcuts } from "@/components/KeyboardShortcuts";
-import { CommandPalette } from "@/components/CommandPalette";
-import { useAutoCollapseSidebar } from "@/hooks/useAutoCollapseSidebar";
-import { ShortcutsHint } from "@/components/ShortcutsHint";
-import { FilterSidebar } from "@/components/FilterSidebar";
-import { useLocalStorage } from "@/hooks/use-local-storage";
+import { ChatArea } from "@/app/components/ChatArea";
+import { Header } from "@/app/components/Header";
+import { ThemeProvider } from "@/app/components/ThemeProvider";
+import { KeyboardShortcuts } from "@/app/components/KeyboardShortcuts";
+import { CommandPalette } from "@/app/components/CommandPalette";
+import { useAutoCollapseSidebar } from "@/app/hooks/useAutoCollapseSidebar";
+import { ShortcutsHint } from "@/app/components/ShortcutsHint";
+import { FilterSidebar } from "@/app/components/FilterSidebar";
+import { useLocalStorage } from "@/app/hooks/use-local-storage";
 import { toast } from "sonner";
-import { ExportDatasetDialog } from "@/components/ExportDatasetDialog";
-import { useHealthCheck } from "@/hooks/useSurveyData";
+import { ExportDatasetDialog } from "@/app/components/ExportDatasetDialog";
+import { useHealthCheck } from "@/app/hooks/useSurveyData";
 import React from "react";
-import { SurveyFilters } from "@/types/survey";
-import { SurveyDataDisplay } from "@/components/SurveyDataDisplay";
-import { ApiDebugger } from "@/components/ApiDebugger";
+import { SurveyFilters } from "@/app/types/survey";
+import { SurveyDataDisplay } from "@/app/components/SurveyDataDisplay";
+import { ApiDebugger } from "@/app/components/ApiDebugger";
 
 // Memoized chat area for performance
 const MemoizedChatArea = memo(ChatArea);

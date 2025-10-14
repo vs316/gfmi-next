@@ -1,16 +1,17 @@
+"use client";
 import { useState, useRef, useEffect } from "react";
 import { Send, Paperclip, MessageSquare, Download, X, AlertTriangle, Square, Globe } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { ChatMessage } from "@/components/ChatMessage";
-import { WelcomeScreen } from "@/components/WelcomeScreen";
-import { KeyboardShortcuts } from "@/components/KeyboardShortcuts";
-import { useLocalStorage } from "@/hooks/use-local-storage";
+import { Button } from "@/app/components/ui/button";
+import { Textarea } from "@/app/components/ui/textarea";
+import { ScrollArea } from "@/app/components/ui/scroll-area";
+import { ChatMessage } from "@/app/components/ChatMessage";
+import { WelcomeScreen } from "@/app/components/WelcomeScreen";
+import { KeyboardShortcuts } from "@/app/components/KeyboardShortcuts";
+import { useLocalStorage } from "@/app/hooks/use-local-storage";
 import { toast } from "sonner";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { TypingIndicator } from "./TypingIndicator";
-import { Filters } from "@/types/filters";
+import { Filters } from "@/app/types/filters";
 
 interface Message {
   id: string;

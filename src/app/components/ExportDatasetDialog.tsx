@@ -138,6 +138,7 @@
 //     </Dialog>
 //   );
 // };
+"use client";
 import { useState } from "react";
 import {
   Dialog,
@@ -145,18 +146,18 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+} from "@/app/components/ui/dialog";
+import { Button } from "@/app/components/ui/button";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@/app/components/ui/select";
 import { Download, Database, Info } from "lucide-react";
 import { toast } from "sonner";
-import { Filters } from "@/types/filters";
+import { Filters } from "@/app/types/filters";
 
 interface ExportDatasetDialogProps {
   open: boolean;
