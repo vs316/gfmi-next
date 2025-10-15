@@ -1,0 +1,28 @@
+# 1. Install deps
+FROM node:20-alpine AS deps
+WORKDIR /app
+COPY package.json package-lock.json* ./
+RUN npm ci
+
+# 2. Build stage (for types & lint if needed—but dev uses dev server)
+FROM node:20-alpine AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+# Optionally run type checks or lint here:
+# RUN npm run type-check
+# RUN npm run lint
+
+# 3. Dev runtime
+FROM node:20-alpine AS dev
+WORKDIR /app
+
+# Copy code & deps
+COPY --from=builder /app ./
+
+ENV NODE_ENV=development
+ENV NEXT_TELEMETRY_DISABLED=1
+EXPOSE 3000
+
+# Run Next.js in dev mode with hot-reload
+CMD ["npm", "run", "dev"]
