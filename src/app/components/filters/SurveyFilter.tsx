@@ -281,6 +281,7 @@ import { Filters } from "@/app/types/filters";
 import { useFilterOptions } from "@/app/hooks/useSurveyData";
 import { LoadingSkeleton } from "@/app/components/LoadingSkeleton";
 import { useMemo } from "react";
+import { Option } from "@/app/components/ui/multi-select";
 
 interface SurveyFilterProps {
   filters: Filters;
@@ -291,20 +292,17 @@ export const SurveyFilter = ({ filters, setFilters }: SurveyFilterProps) => {
   const { data: filterOptions, isLoading, error } = useFilterOptions();
 
   const surveyNameOptions = useMemo(() => 
-    filterOptions?.survey_names?.map((survey: { value: string; label: string }) => ({
-      value: survey.value,
-      label: survey.label?.length > 50 ? `${survey.label.substring(0, 50)}...` : survey.label
-    }))
-    .filter((opt: { value: any; label: any; })=>opt.value && opt.label ) || [],
-     [filterOptions?.survey_names]
+    filterOptions?.survey_names?.map((name:string) => ({
+      value: name,
+      label: name?.length > 50 ? `${name.substring(0, 50)}...` : name
+    })),[filterOptions?.survey_names]
   );
 
   const questionOptions = useMemo(() => 
-    filterOptions?.questions?.map((question: { value: string; label: string }) => ({
-      value: question.value,
-      label: question.label?.length > 60 ? `${question.label.substring(0, 60)}...` : question.label
-    })).filter((opt: { value: any; label: any; }) => opt.value && opt.label)  || [],
-     [filterOptions?.questions]
+    filterOptions?.questions?.map((name:string) => ({
+      value: name,
+      label: name?.length > 60 ? `${name.substring(0, 60)}...` : name
+    })),[filterOptions?.questions]
   );
 
   if (isLoading) {

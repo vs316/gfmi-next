@@ -137,7 +137,7 @@ import { Filters } from "@/app/types/filters";
 import { useFilterOptions } from "@/app/hooks/useSurveyData";
 import { LoadingSkeleton } from "@/app/components/LoadingSkeleton";
 import { useMemo, useEffect } from "react";
-
+import  {Option}  from "@/app/components/ui/multi-select";
 interface GeographicFilterProps {
   filters: Filters;
   setFilters: (filters: Filters | ((prev: Filters) => Filters)) => void;
@@ -151,26 +151,37 @@ export const GeographicFilter = ({
 
   // Convert API data to MultiSelect format
   const regionOptions = useMemo(() => 
-    filterOptions?.regions?.map((region: { value: string; label: string }) => ({
-      value: region.value,
-      label: region.label
-    })) || [], [filterOptions?.regions]
+    (filterOptions?.regions || []).map((name: string) => ({
+      value: name,
+      label: name
+    })), [filterOptions?.regions]
   );
 
   const countryOptions = useMemo(() => 
-    filterOptions?.countries?.map((country: { value: string; label: string }) => ({
-      value: country.value,
-      label: country.label
-    })) || [], [filterOptions?.countries]
+    (filterOptions?.countries || []).map((name: string)=> ({
+      value: name,
+      label: name
+    })),[filterOptions?.countries]
   );
 
   const territoryOptions = useMemo(() => 
-    filterOptions?.territories?.map((territory: { value: string; label: string }) => ({
-      value: territory.value,
-      label: territory.label
-    })) || [], [filterOptions?.territories]
+    (filterOptions?.territories || []).map((name: string)=> ({
+      value: name,
+      label: name
+    })),[filterOptions?.territories]
   );
-
+  const stateOptions = useMemo(() => 
+    (filterOptions?.states || []).map((name: string)=> ({
+      value: name,
+      label: name
+    })),[filterOptions?.states]
+  );
+  const cityOptions = useMemo(() => 
+    (filterOptions?.cities || []).map((name: string)=> ({
+      value: name,
+      label: name
+    })),[filterOptions?.cities]
+  );
   // Show loading state
   if (isLoading) {
     return (
@@ -208,7 +219,12 @@ export const GeographicFilter = ({
   const handleTerritoryChange = (values: string[]) => {
     setFilters(prev => ({ ...prev, state: values }));
   };
-
+  const handleStateChange = (values: string[]) => {
+    setFilters(prev => ({ ...prev, state: values }));
+  };
+  const handleCityChange = (values: string[]) => {
+    setFilters(prev => ({ ...prev, city: values }));
+  };
   return (
     <div className="space-y-4">
       <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">
@@ -253,26 +269,26 @@ export const GeographicFilter = ({
         </div>
 
         {/* Keep existing city and province fields for compatibility */}
-        <div>
+        {/* <div>
           <label className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1 block">
-            Province
+            State
           </label>
           <MultiSelect
-            options={[]} // Empty for now, can be populated based on country selection
-            selected={filters.province || []}
-            onChange={(value) => setFilters(prev => ({ ...prev, province: value }))}
-            placeholder="Search province..."
+            options={stateOptions}
+            selected={filters.state || []}
+            onChange={handleStateChange}
+            placeholder="Search state..."
           />
-        </div>
+        </div> */}
         
         <div>
           <label className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1 block">
             City
           </label>
           <MultiSelect
-            options={[]} // Empty for now, can be populated based on state/province selection
+            options={cityOptions} 
             selected={filters.city || []}
-            onChange={(value) => setFilters(prev => ({ ...prev, city: value }))}
+            onChange={handleCityChange}
             placeholder="Search city..."
           />
         </div>

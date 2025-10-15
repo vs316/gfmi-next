@@ -83,7 +83,7 @@ import { Filters } from "@/app/types/filters";
 import { useFilterOptions } from "@/app/hooks/useSurveyData";
 import { LoadingSkeleton } from "@/app/components/LoadingSkeleton";
 import { useMemo } from "react";
-
+import { Option } from "@/app/components/ui/multi-select";
 interface TherapeuticFilterProps {
   filters: Filters;
   setFilters: (filters: Filters | ((prev: Filters) => Filters)) => void;
@@ -97,18 +97,18 @@ export const TherapeuticFilter = ({
 
   // Convert API data to MultiSelect format
   const tumorTypeOptions = useMemo(() => 
-    filterOptions?.tumor_types?.map((type: { value: string; label: string }) => ({
-      value: type.value,
-      label: type.label
-    })) || [], [filterOptions?.tumor_types]
+    (filterOptions?.tumor_types || []).map((name: string) => ({
+      value: name,
+      label: name
+    })),[filterOptions?.tumor_types]
   );
 
   const therapeuticAreaOptions = useMemo(() => 
     // Use tumor types as therapeutic areas since they map to the same field
-    filterOptions?.tumor_types?.map((type: { value: string; label: string }) => ({
-      value: type.value,
-      label: `${type.label} Oncology`
-    })) || [], [filterOptions?.tumor_types]
+    (filterOptions?.tumor_types || []).map((name: string) => ({
+      value: name,
+      label: `${name} Oncology`
+    })),[filterOptions?.tumor_types]
   );
 
   if (isLoading) {

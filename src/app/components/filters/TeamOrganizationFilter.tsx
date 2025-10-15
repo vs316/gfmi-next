@@ -106,7 +106,7 @@ import { MultiSelect } from "@/app/components/ui/multi-select";
 import { Filters } from "@/app/types/filters";
 import { useFilterOptions } from "@/app/hooks/useSurveyData";
 import { LoadingSkeleton } from "@/app/components/LoadingSkeleton";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 interface TeamOrganizationFilterProps {
   filters: Filters;
@@ -118,43 +118,43 @@ export const TeamOrganizationFilter = ({
   setFilters,
 }: TeamOrganizationFilterProps) => {
   const { data: filterOptions, isLoading, error } = useFilterOptions();
-
+  
+  useEffect(() => {
+    console.log("filterOptions:", filterOptions);
+  }, [filterOptions]);
   // Convert API data to MultiSelect format
   const mslOptions = useMemo(() => 
-    filterOptions?.msl_names?.map((msl: { value: string; label: string }) => ({
-      value: msl.value,
-      label: msl.label
-    })).filter || [], [filterOptions?.msl_names]
+    (filterOptions?.msl_names || []).map((name: string) => ({
+      value: name,
+      label: name
+    })),[filterOptions?.msl_names]
   );
 
-  const titleOptions = useMemo(() => 
-    filterOptions?.titles?.map((title: { value: string; label: string }) => ({
-      value: title.value,
-      label: title.label
-    })) || [], [filterOptions?.titles]
+  const titleOptions: Option[] = useMemo(
+    () =>
+      (filterOptions?.titles || []).map((title: string) => ({
+        value: title,
+        label: title,
+      })),
+    [filterOptions?.titles]
   );
 
-  const departmentOptions = useMemo(() => 
-    filterOptions?.departments?.map((dept: { value: string; label: string }) => ({
-      value: dept.value,
-      label: dept.label
-    })) || [], [filterOptions?.departments]
+  const nationalDirectorOptions: Option[] = useMemo(
+    () =>
+      titleOptions.filter((opt) =>
+        opt.label.toLowerCase().includes("director")
+      ),
+    [titleOptions]
   );
 
-  const userTypeOptions = useMemo(() => 
-    filterOptions?.user_types?.map((type: { value: string; label: string }) => ({
-      value: type.value,
-      label: type.label
-    })) || [], [filterOptions?.user_types]
+  const regionalDirectorOptions: Option[] = useMemo(
+    () =>
+      titleOptions.filter((opt) =>
+        opt.label.toLowerCase().includes("regional")
+      ),
+    [titleOptions]
   );
-  // Then when filtering, add additional safety:
-  const nationalDirectorOptions: Option[] = titleOptions.filter((opt: Option) => 
-    opt?.label?.toLowerCase().includes('director')
-  ) || [];
 
-  const regionalDirectorOptions: Option[] = titleOptions.filter((opt: Option) => 
-    opt?.label?.toLowerCase().includes('regional')
-  ) || [];
   if (isLoading) {
     return (
       <div className="space-y-4">
