@@ -26,8 +26,19 @@ export interface Filters {
   therapeuticArea: string[];
   tumourType: string[];
   // DateRangeFilter key
-  customDateRange: { from: string; to: string; label?: string } | null;
-  dateRange: string;
+  dateRange?: string;
+  customDateRange?: {
+    id: string;
+    from: string;
+    to: string;
+    label: string;
+  } | null;
+  savedCustomRanges?: Array<{
+    id: string;
+    from: string;
+    to: string;
+    label: string;
+  }>;
 }
 
 export interface FilterProps {

@@ -43,10 +43,10 @@ interface ExportOptions {
 }
 
 export const ChatArea = ({ datasetCount, filters }: ChatAreaProps) => {
-  const [messages, setMessages] = useLocalStorage("gfmi-chat-history", []);
-  const [input, setInput] = useLocalStorage("gfmi-draft-message", "");
+  const [messages, setMessages] = useLocalStorage<Message[]>("gfmi-chat-history", []);
+  const [input, setInput] = useLocalStorage<string>("gfmi-draft-message", "");
   const [isLoading, setIsLoading] = useState(false);
-  const [pendingUserMessage, setPendingUserMessage] = useState(null);
+  const [pendingUserMessage, setPendingUserMessage] = useState<string | null>(null);
   // Add this to your existing state in ChatArea.tsx
   const [isGenerating, setIsGenerating] = useState(false);
   const [abortController, setAbortController] = useState<AbortController | null>(null);
@@ -361,13 +361,13 @@ useEffect(() => {
         segments.forEach((segment) => {
           // Set font style based on segment properties
           if (segment.bold && segment.italic) {
-            doc.setFont(undefined, 'bolditalic');
+            doc.setFont('helvetica', 'bolditalic');
           } else if (segment.bold) {
-            doc.setFont(undefined, 'bold');
+            doc.setFont('helvetica', 'bold');
           } else if (segment.italic) {
-            doc.setFont(undefined, 'italic');
+            doc.setFont('helvetica', 'italic');
           } else {
-            doc.setFont(undefined, 'normal');
+            doc.setFont('helvetica', 'normal');
           }
 
           // Handle text wrapping for long segments
@@ -963,7 +963,7 @@ Could you provide more specific details about what aspect you'd like me to focus
             //   </DropdownMenuContent>
             // </DropdownMenu>
             <DropdownMenu open={exportDropdownOpen} onOpenChange={setExportDropdownOpen}>
-            <DropdownMenuTrigger asChild>
+            <DropdownMenuTrigger asChild >
               <Button 
                 ref={exportButtonRef}
                 variant="outline" 

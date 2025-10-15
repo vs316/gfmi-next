@@ -3,8 +3,9 @@ import { useState } from "react";
 import { Button } from "@/app/components/ui/button";
 import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
-import { Plus } from "lucide-react";
+import { Plus, X } from "lucide-react";
 import { Filters } from "@/app/types/filters";
+import { toast } from "sonner";
 
 interface DateRangeFilterProps {
   filters: Filters;
@@ -24,22 +25,78 @@ export const DateRangeFilter = ({ filters, setFilters }: DateRangeFilterProps) =
     setShowCustomRange(false);
   };
 
+  const handleCustomRangeSelect = (customRange: any) => {
+    setFilters({ 
+      ...filters, 
+      dateRange: "Custom", 
+      customDateRange: customRange 
+    });
+  };
+
   const handleAddCustomRange = () => {
-    if (customFrom && customTo) {
-      setFilters({
-        ...filters,
-        dateRange: "Custom",
-        customDateRange: {
-          from: customFrom,
-          to: customTo,
-          label: customLabel || `${customFrom} to ${customTo}`,
-        },
-      });
-      setShowCustomRange(false);
-      setCustomFrom("");
-      setCustomTo("");
-      setCustomLabel("");
+    // Validation
+    if (!customFrom || !customTo) {
+      toast.error("Please select both start and end dates");
+      return;
     }
+
+    if (new Date(customFrom) > new Date(customTo)) {
+      toast.error("Start date must be before end date");
+      return;
+    }
+
+    const newCustomRange = {
+      id: `custom-${Date.now()}`,
+      from: customFrom,
+      to: customTo,
+      label: customLabel || `${customFrom} to ${customTo}`,
+    };
+
+    // Add to the array of saved custom ranges
+    const updatedCustomRanges = [
+      ...(filters.savedCustomRanges || []),
+      newCustomRange
+    ];
+
+    setFilters({
+      ...filters,
+      dateRange: "Custom",
+      customDateRange: newCustomRange,
+      savedCustomRanges: updatedCustomRanges
+    });
+
+    // Reset form
+    setShowCustomRange(false);
+    setCustomFrom("");
+    setCustomTo("");
+    setCustomLabel("");
+    
+    toast.success("Custom date range added");
+  };
+
+  const handleRemoveCustomRange = (id: string) => {
+    const updatedCustomRanges = (filters.savedCustomRanges || []).filter(
+      range => range.id !== id
+    );
+    
+    setFilters({
+      ...filters,
+      savedCustomRanges: updatedCustomRanges,
+      // If the removed range was currently selected, clear selection
+      ...(filters.customDateRange?.id === id && {
+        dateRange: "",
+        customDateRange: null
+      })
+    });
+    
+    toast.success("Custom date range removed");
+  };
+
+  const handleCancel = () => {
+    setShowCustomRange(false);
+    setCustomFrom("");
+    setCustomTo("");
+    setCustomLabel("");
   };
 
   return (
@@ -48,6 +105,8 @@ export const DateRangeFilter = ({ filters, setFilters }: DateRangeFilterProps) =
       
       <div className="space-y-2">
         <p className="text-sm font-medium text-sidebar-foreground">Date Range</p>
+        
+        {/* Quick Ranges */}
         <div className="flex flex-wrap gap-2">
           {quickRanges.map((range) => (
             <Button
@@ -61,6 +120,37 @@ export const DateRangeFilter = ({ filters, setFilters }: DateRangeFilterProps) =
             </Button>
           ))}
         </div>
+
+        {/* Saved Custom Ranges */}
+        {filters.savedCustomRanges && filters.savedCustomRanges.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {filters.savedCustomRanges.map((customRange) => (
+              <div key={customRange.id} className="flex items-center gap-1">
+                <Button
+                  variant={
+                    filters.dateRange === "Custom" && 
+                    filters.customDateRange?.id === customRange.id 
+                      ? "default" 
+                      : "outline"
+                  }
+                  size="sm"
+                  onClick={() => handleCustomRangeSelect(customRange)}
+                  className="text-xs"
+                >
+                  {customRange.label}
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-6 w-6 p-0 hover:bg-destructive hover:text-destructive-foreground"
+                  onClick={() => handleRemoveCustomRange(customRange.id)}
+                >
+                  <X className="h-3 w-3" />
+                </Button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {!showCustomRange && (
@@ -122,7 +212,7 @@ export const DateRangeFilter = ({ filters, setFilters }: DateRangeFilterProps) =
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setShowCustomRange(false)}
+              onClick={handleCancel}
               className="flex-1 text-xs"
             >
               Cancel

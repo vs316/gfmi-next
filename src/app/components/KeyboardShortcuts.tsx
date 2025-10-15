@@ -52,11 +52,29 @@ export const KeyboardShortcuts = ({
         return;
       }
 
-      // Command/Ctrl + E to export conversation
       if ((e.metaKey || e.ctrlKey) && e.key === "e") {
         e.preventDefault();
-        onExportConversation?.();
-        toast.success("Conversation exported", { duration: 2000 });
+        
+        // Check if there are messages to export
+        const messages = JSON.parse(localStorage.getItem("gfmi-chat-history") || "[]");
+        if (!messages || messages.length === 0) {
+          toast.info("No conversation to export");
+          return;
+        }
+
+        // Find and click the export button directly
+        const exportButton = document.querySelector('[data-export-trigger]') as HTMLButtonElement;
+        if (exportButton) {
+          exportButton.click();
+          toast.success("Export options opened", { duration: 2000 });
+        } else {
+          // Fallback to custom event
+          const openExportDropdownEvent = new CustomEvent("open-export-dropdown", {
+            detail: { source: "keyboard-shortcut" }
+          });
+          window.dispatchEvent(openExportDropdownEvent);
+          toast.success("Export options opened", { duration: 2000 });
+        }
         return;
       }
 
