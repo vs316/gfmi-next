@@ -97,17 +97,17 @@ export const TherapeuticFilter = ({
 
   // Convert API data to MultiSelect format
   const tumorTypeOptions = useMemo(() => 
-    filterOptions?.tumor_types?.map(type => ({
-      value: type,
-      label: type
+    filterOptions?.tumor_types?.map((type: { value: string; label: string }) => ({
+      value: type.value,
+      label: type.label
     })) || [], [filterOptions?.tumor_types]
   );
 
   const therapeuticAreaOptions = useMemo(() => 
     // Use tumor types as therapeutic areas since they map to the same field
-    filterOptions?.tumor_types?.map(type => ({
-      value: type,
-      label: `${type} Oncology`
+    filterOptions?.tumor_types?.map((type: { value: string; label: string }) => ({
+      value: type.value,
+      label: `${type.label} Oncology`
     })) || [], [filterOptions?.tumor_types]
   );
 
@@ -146,7 +146,7 @@ export const TherapeuticFilter = ({
           </label>
           <MultiSelect
             options={tumorTypeOptions}
-            selected={filters.tumourType}
+            selected={filters.tumourType || []}
             onChange={(value) => setFilters(prev => ({ ...prev, tumourType: value }))}
             placeholder="Select tumor type..."
           />
@@ -158,7 +158,7 @@ export const TherapeuticFilter = ({
           </label>
           <MultiSelect
             options={therapeuticAreaOptions}
-            selected={filters.therapeuticArea}
+            selected={filters.therapeuticArea || []}
             onChange={(value) => setFilters(prev => ({ ...prev, therapeuticArea: value }))}
             placeholder="Select therapeutic area..."
           />

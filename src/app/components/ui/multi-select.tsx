@@ -30,9 +30,12 @@ export function MultiSelect({
 }: MultiSelectProps) {
   const [open, setOpen] = React.useState(false);
   const [search, setSearch] = React.useState("");
-
-  const filteredOptions = options.filter((option) =>
-    option.label.toLowerCase().includes(search.toLowerCase())
+  // Add defensive check - ensure options is an array
+  const safeOptions = Array.isArray(options) 
+    ? options.filter(opt => opt && opt.label && opt.value) 
+    : [];
+  const filteredOptions = safeOptions.filter((option) =>
+    option.label?.toLowerCase().includes(search.toLowerCase())
   );
 
   const handleSelect = (value: string) => {

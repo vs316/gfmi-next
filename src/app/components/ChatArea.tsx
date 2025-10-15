@@ -1,6 +1,6 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
-import { Send, Paperclip, MessageSquare, Download, X, AlertTriangle, Square, Globe } from "lucide-react";
+import { Send, Paperclip, MessageSquare, Download, X, AlertTriangle, Square, Globe, FileText } from "lucide-react";
 import { Button } from "@/app/components/ui/button";
 import { Textarea } from "@/app/components/ui/textarea";
 import { ScrollArea } from "@/app/components/ui/scroll-area";
@@ -12,6 +12,13 @@ import { toast } from "sonner";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { TypingIndicator } from "./TypingIndicator";
 import { Filters } from "@/app/types/filters";
+import { ClientOnly } from "./ClientOnly";
+import dynamic from "next/dynamic";
+
+const ExportChatButton = dynamic(
+  () => import('@/app/components/ExportChatButton').then(mod => ({ default: mod.ExportChatButton })),
+  { ssr: false }
+);
 
 interface Message {
   id: string;
@@ -44,6 +51,10 @@ interface ExportOptions {
 
 export const ChatArea = ({ datasetCount, filters }: ChatAreaProps) => {
   const [messages, setMessages] = useLocalStorage<Message[]>("gfmi-chat-history", []);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   const [input, setInput] = useLocalStorage<string>("gfmi-draft-message", "");
   const [isLoading, setIsLoading] = useState(false);
   const [pendingUserMessage, setPendingUserMessage] = useState<string | null>(null);
@@ -63,27 +74,27 @@ export const ChatArea = ({ datasetCount, filters }: ChatAreaProps) => {
   const MAX_LINES = 100; // Increased proportionally
   const MAX_FILES = 5; // Combined limit for all files
   const MAX_FILE_SIZE = 15 * 1024 * 1024; // 15MB limit
-  const [exportDropdownOpen, setExportDropdownOpen] = useState(false);
-const exportButtonRef = useRef<HTMLButtonElement>(null);
+  // const [exportDropdownOpen, setExportDropdownOpen] = useState(false);
+// const exportButtonRef = useRef<HTMLButtonElement>(null);
 
 // Listen for command palette export trigger
-useEffect(() => {
-  const handleOpenExportDropdown = (event: CustomEvent) => {
-    if (event.detail?.source === "command-palette") {
-      setExportDropdownOpen(true);
+// useEffect(() => {
+//   const handleOpenExportDropdown = (event: CustomEvent) => {
+//     if (event.detail?.source === "command-palette") {
+//       setExportDropdownOpen(true);
       
-      // Optional: Focus the export button for better UX
-      setTimeout(() => {
-        exportButtonRef.current?.focus();
-      }, 100);
-    }
-  };
+//       // Optional: Focus the export button for better UX
+//       setTimeout(() => {
+//         exportButtonRef.current?.focus();
+//       }, 100);
+//     }
+//   };
 
-  window.addEventListener("open-export-dropdown", handleOpenExportDropdown as EventListener);
-  return () => {
-    window.removeEventListener("open-export-dropdown", handleOpenExportDropdown as EventListener);
-  };
-}, []);
+//   window.addEventListener("open-export-dropdown", handleOpenExportDropdown as EventListener);
+//   return () => {
+//     window.removeEventListener("open-export-dropdown", handleOpenExportDropdown as EventListener);
+//   };
+// }, []);
   // Allowed file types for production
   const ALLOWED_FILE_TYPES = [
     // Images
@@ -484,7 +495,7 @@ useEffect(() => {
 
       // Add header
       doc.setFontSize(10);
-      doc.setFont(undefined, 'bold');
+      doc.setFont('helvetica', 'bold');
       const header = `[${time}] ${role}:`;
       
       // Check if we need a new page for header
@@ -503,7 +514,7 @@ useEffect(() => {
         if (msg.citations && msg.citations.length > 0) {
           y += 3;
           doc.setFontSize(8);
-          doc.setFont(undefined, 'italic');
+          doc.setFont('helvetica', 'italic');
           
           if (y + 5 > pageHeight - margin) {
             doc.addPage();
@@ -920,7 +931,7 @@ Could you provide more specific details about what aspect you'd like me to focus
     setPendingUserMessage(null);
     toast.info("Response generation stopped");
   };
-
+  
 
   return (
     <div className="flex h-full flex-col bg-background">
@@ -933,62 +944,18 @@ Could you provide more specific details about what aspect you'd like me to focus
             <span className="font-semibold text-foreground">GFMI Assistant</span>
           </div>
           
-          {messages.length > 0 && (
-            // <DropdownMenu>
-            //   <DropdownMenuTrigger asChild>
-            //     <Button variant="outline" size="sm" className="gap-2">
-            //       <Download className="h-4 w-4" />
-            //       Export Chat
-            //     </Button>
-            //   </DropdownMenuTrigger>
-            //   <DropdownMenuContent align="end">
-            //     <DropdownMenuItem 
-            //       onClick={() => exportConversation({ format: 'txt' })}
-            //       className="cursor-pointer text-sm"
-            //     >
-            //       Export as TXT
-            //     </DropdownMenuItem>
-            //     <DropdownMenuItem 
-            //       onClick={() => exportConversation({ format: 'pdf' })}
-            //       className="cursor-pointer text-sm"
-            //     >
-            //       Export as PDF
-            //     </DropdownMenuItem>
-            //     <DropdownMenuItem 
-            //       onClick={() => exportConversation({ format: 'docx' })}
-            //       className="cursor-pointer text-sm"
-            //     >
-            //       Export as DOCX
-            //     </DropdownMenuItem>
-            //   </DropdownMenuContent>
-            // </DropdownMenu>
-            <DropdownMenu open={exportDropdownOpen} onOpenChange={setExportDropdownOpen}>
-            <DropdownMenuTrigger asChild >
-              <Button 
-                ref={exportButtonRef}
-                variant="outline" 
-                size="sm" className="gap-2"
-              >
-                <Download className="h-4 w-4" />
-                Export Chat
+        {messages.length > 0 && mounted && (
+          <ExportChatButton onExport={exportConversation} />
+        )}
+        {/* {messages.length > 0 && !mounted && (
+            <Button variant="outline" size="sm" className="gap-2" disabled>
+              <Download className="h-4 w-4" />
+              <span>Export Chat</span>
               </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => exportConversation({ format: 'txt' })}className="cursor-pointer text-sm">
-                Export as TXT
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => exportConversation({ format: 'pdf' })}className="cursor-pointer text-sm">
-                Export as PDF
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => exportConversation({ format: 'docx' })}className="cursor-pointer text-sm">
-                Export as DOCX
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          )}
+        )} */}
         </div>
 
-        {/* Messages Area - Enhanced Layout */}
+{/* Messages Area - Enhanced Layout */}
         <ScrollArea 
           ref={scrollAreaRef} 
           className="flex-1 px-4 md:px-6"

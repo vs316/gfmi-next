@@ -16,46 +16,54 @@ import React from "react";
 import { SurveyFilters } from "@/app/types/survey";
 import { SurveyDataDisplay } from "@/app/components/SurveyDataDisplay";
 import { ApiDebugger } from "@/app/components/ApiDebugger";
+import { Filters } from "./types/filters";
 
 // Memoized chat area for performance
 const MemoizedChatArea = memo(ChatArea);
 
 const Index = () => {
   const { data: healthData, error: healthError } = useHealthCheck();
-  const [filters, setFilters] = useState({
-    dateRange: "Last 90 days",
-    customDateRange: null as { from: string; to: string; label?: string } | null,
-    teamOrg: [] as string[],
-    nationalDirector: [] as string[],
-    regionalDirector: [] as string[],
-    msl: [] as string[],
-    region: [] as string[],
-    country: [] as string[],
-    state: [] as string[],
-    province: [] as string[],
-    city: [] as string[],
-    specialty: [] as string[],
-    tier: [] as string[],
-    practiceSetting: [] as string[],
-    conferences: [] as string[],
-    advisoryBoards: [] as string[],
-    specificSurvey: [] as string[],
-    surveyQuestion: [] as string[],
-    therapeuticArea: [] as string[],
-    tumourType: [] as string[],
+  const [filters, setFilters] = useState<Filters>({
+    dateRange: "",
+  customDateRange: null,
+  savedCustomRanges: [],
+  teamOrg: [],
+  nationalDirector: [],
+  regionalDirector: [],
+  msl: [],
+  region: [],
+  country: [],
+  territory: [],
+  state: [],
+  province: [],
+  city: [],
+  surveyName: [],
+  question: [],
+  specificSurvey: [],
+  surveyQuestion: [],
+  title: [],
+  department: [],
+  userType: [],
+  therapeuticArea: [],
+  tumourType: [],
+  specialty: [],
+  tier: [],
+  practiceSetting: [],
+  conferences: [],
+  advisoryBoards: [],
   });
 
   // NEW: Convert your filters to API format
   const apiFilters = useMemo((): SurveyFilters => ({
     // Map your current filters to API filters
-    country_geo_id: filters.country[0], // Take first selected country
-    territory: filters.state[0], // Map state to territory
-    region: filters.region[0], // Take first selected region
-    msl_name: filters.msl[0], // Take first selected MSL
-    survey_name: filters.specificSurvey[0], // Map to survey name
-    response: filters.tumourType[0], // Map tumor type to response
+    country_geo_id: filters.country?.[0] || '', // Take first selected country
+    territory: filters.state?.[0] || '', // Map state to territory
+    region: filters.region?.[0] || '', // Take first selected region
+    msl_name: filters.msl?.[0] || '', // Take first selected MSL
+    survey_name: filters.specificSurvey?.[0] || '', // Map to survey name
+    response: filters.tumourType?.[0] || '',
     account_name: undefined, // Can be added based on other filters
-    title: filters.teamOrg[0], // Map team org to title
+    title: filters.teamOrg?.[0] || '', // Map team org to title
     // Add pagination
     page: 1,
     size: 50,

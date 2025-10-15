@@ -82,6 +82,7 @@ import {
 import { MobileFilterSheet } from "@/app/components/MobileFilterSheet";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/app/components/ui/tooltip";
 import { Filters } from "@/app/types/filters";
+import { useState } from "react";
 interface HeaderProps {
   filters?: Filters;
   setFilters?: (filters: Filters | ((prev: Filters) => Filters)) => void;
@@ -102,6 +103,8 @@ export const Header = ({
   sidebarOpen 
 }: HeaderProps) => {
   const { setTheme, theme, } = useTheme();
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
+
   const handleThemeChange = (newTheme: "light" | "dark" | "system") => {
     // Add transition class to body for smooth animation
     document.body.classList.add('theme-transitioning');
@@ -130,12 +133,16 @@ export const Header = ({
 
           {/* Mobile Filter Sheet - Only visible on mobile */}
           <div className="md:hidden">
+            {showMobileFilters && filters && setFilters && onClearAll && datasetCount !== undefined && (
             <MobileFilterSheet
+              open={showMobileFilters}
+              onOpenChange={setShowMobileFilters}
               filters={filters}
               setFilters={setFilters}
               onClearAll={onClearAll}
               datasetCount={datasetCount}
             />
+          )}
           </div>
 
           <div className="flex items-center space-x-2">

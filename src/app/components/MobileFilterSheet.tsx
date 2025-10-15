@@ -17,7 +17,9 @@ import { toast } from "sonner";
 import { Filters } from "@/app/types/filters";
 
 interface MobileFilterSheetProps {
- filters: Filters;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  filters: Filters;
   setFilters: (filters: Filters | ((prev: Filters) => Filters)) => void;
   onClearAll: () => void;
   datasetCount: number;

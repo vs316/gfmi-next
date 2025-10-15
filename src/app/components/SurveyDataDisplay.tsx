@@ -240,7 +240,7 @@ export const SurveyDataDisplay = ({ filters }: SurveyDataDisplayProps) => {
                 <p className="text-muted-foreground">No surveys found matching your filters.</p>
               </div>
             ) : (
-              surveys.map((survey, index) => (
+              surveys.map((survey:any, index:number) => (
                 <div key={survey.survey_qstn_resp_id|| `survey-row-${index}`} className="space-y-3 pb-4">
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1 min-w-0"> {/* Added min-w-0 for text truncation */}

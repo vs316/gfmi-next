@@ -151,23 +151,23 @@ export const GeographicFilter = ({
 
   // Convert API data to MultiSelect format
   const regionOptions = useMemo(() => 
-    filterOptions?.regions?.map(region => ({
-      value: region,
-      label: region
+    filterOptions?.regions?.map((region: { value: string; label: string }) => ({
+      value: region.value,
+      label: region.label
     })) || [], [filterOptions?.regions]
   );
 
   const countryOptions = useMemo(() => 
-    filterOptions?.countries?.map(country => ({
-      value: country,
-      label: country
+    filterOptions?.countries?.map((country: { value: string; label: string }) => ({
+      value: country.value,
+      label: country.label
     })) || [], [filterOptions?.countries]
   );
 
   const territoryOptions = useMemo(() => 
-    filterOptions?.territories?.map(territory => ({
-      value: territory,
-      label: territory
+    filterOptions?.territories?.map((territory: { value: string; label: string }) => ({
+      value: territory.value,
+      label: territory.label
     })) || [], [filterOptions?.territories]
   );
 
@@ -222,7 +222,7 @@ export const GeographicFilter = ({
           </label>
           <MultiSelect
             options={regionOptions}
-            selected={filters.region}
+            selected={filters.region || []}
             onChange={handleRegionChange}
             placeholder="Search region..."
           />
@@ -234,7 +234,7 @@ export const GeographicFilter = ({
           </label>
           <MultiSelect
             options={countryOptions}
-            selected={filters.country}
+            selected={filters.country || []}
             onChange={handleCountryChange}
             placeholder="Search country..."
           />
@@ -246,7 +246,7 @@ export const GeographicFilter = ({
           </label>
           <MultiSelect
             options={territoryOptions}
-            selected={filters.state} // Using state field for territories
+            selected={filters.state || []} // Using state field for territories
             onChange={handleTerritoryChange}
             placeholder="Search territory..."
           />
@@ -259,7 +259,7 @@ export const GeographicFilter = ({
           </label>
           <MultiSelect
             options={[]} // Empty for now, can be populated based on country selection
-            selected={filters.province}
+            selected={filters.province || []}
             onChange={(value) => setFilters(prev => ({ ...prev, province: value }))}
             placeholder="Search province..."
           />
@@ -271,7 +271,7 @@ export const GeographicFilter = ({
           </label>
           <MultiSelect
             options={[]} // Empty for now, can be populated based on state/province selection
-            selected={filters.city}
+            selected={filters.city || []}
             onChange={(value) => setFilters(prev => ({ ...prev, city: value }))}
             placeholder="Search city..."
           />

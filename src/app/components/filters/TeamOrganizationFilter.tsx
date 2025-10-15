@@ -101,6 +101,7 @@
 //   );
 // };
 "use client";
+import { Option } from "@/app/components/ui/multi-select";
 import { MultiSelect } from "@/app/components/ui/multi-select";
 import { Filters } from "@/app/types/filters";
 import { useFilterOptions } from "@/app/hooks/useSurveyData";
@@ -120,33 +121,40 @@ export const TeamOrganizationFilter = ({
 
   // Convert API data to MultiSelect format
   const mslOptions = useMemo(() => 
-    filterOptions?.msl_names?.map(msl => ({
-      value: msl,
-      label: msl
-    })) || [], [filterOptions?.msl_names]
+    filterOptions?.msl_names?.map((msl: { value: string; label: string }) => ({
+      value: msl.value,
+      label: msl.label
+    })).filter || [], [filterOptions?.msl_names]
   );
 
   const titleOptions = useMemo(() => 
-    filterOptions?.titles?.map(title => ({
-      value: title,
-      label: title
+    filterOptions?.titles?.map((title: { value: string; label: string }) => ({
+      value: title.value,
+      label: title.label
     })) || [], [filterOptions?.titles]
   );
 
   const departmentOptions = useMemo(() => 
-    filterOptions?.departments?.map(dept => ({
-      value: dept,
-      label: dept
+    filterOptions?.departments?.map((dept: { value: string; label: string }) => ({
+      value: dept.value,
+      label: dept.label
     })) || [], [filterOptions?.departments]
   );
 
   const userTypeOptions = useMemo(() => 
-    filterOptions?.user_types?.map(type => ({
-      value: type,
-      label: type
+    filterOptions?.user_types?.map((type: { value: string; label: string }) => ({
+      value: type.value,
+      label: type.label
     })) || [], [filterOptions?.user_types]
   );
+  // Then when filtering, add additional safety:
+  const nationalDirectorOptions: Option[] = titleOptions.filter((opt: Option) => 
+    opt?.label?.toLowerCase().includes('director')
+  ) || [];
 
+  const regionalDirectorOptions: Option[] = titleOptions.filter((opt: Option) => 
+    opt?.label?.toLowerCase().includes('regional')
+  ) || [];
   if (isLoading) {
     return (
       <div className="space-y-4">
@@ -182,7 +190,7 @@ export const TeamOrganizationFilter = ({
           </label>
           <MultiSelect
             options={mslOptions}
-            selected={filters.msl}
+            selected={filters.msl || []}
             onChange={(value) => setFilters(prev => ({ ...prev, msl: value }))}
             placeholder="Search MSL..."
           />
@@ -194,7 +202,7 @@ export const TeamOrganizationFilter = ({
           </label>
           <MultiSelect
             options={titleOptions}
-            selected={filters.teamOrg} // Map to teamOrg for compatibility
+            selected={filters.teamOrg || []} // Map to teamOrg for compatibility
             onChange={(value) => setFilters(prev => ({ ...prev, teamOrg: value }))}
             placeholder="Search title..."
           />
@@ -205,8 +213,8 @@ export const TeamOrganizationFilter = ({
             National Director
           </label>
           <MultiSelect
-            options={titleOptions.filter(opt => opt.label.toLowerCase().includes('director'))}
-            selected={filters.nationalDirector}
+            options={nationalDirectorOptions}
+            selected={filters.nationalDirector || []}
             onChange={(value) => setFilters(prev => ({ ...prev, nationalDirector: value }))}
             placeholder="Search national director..."
           />
@@ -217,8 +225,8 @@ export const TeamOrganizationFilter = ({
             Regional Director
           </label>
           <MultiSelect
-            options={titleOptions.filter(opt => opt.label.toLowerCase().includes('regional'))}
-            selected={filters.regionalDirector}
+            options={regionalDirectorOptions}
+            selected={filters.regionalDirector || []}
             onChange={(value) => setFilters(prev => ({ ...prev, regionalDirector: value }))}
             placeholder="Search regional director..."
           />

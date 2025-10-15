@@ -38,7 +38,7 @@ export const EventEngagementFilter = ({
           </label>
           <MultiSelect
             options={conferencesOptions}
-            selected={filters.conferences}
+            selected={filters.conferences || []}
             onChange={(value) => setFilters({ ...filters, conferences: value })}
             placeholder="Search conferences..."
           />
@@ -50,7 +50,7 @@ export const EventEngagementFilter = ({
           </label>
           <MultiSelect
             options={advisoryBoardsOptions}
-            selected={filters.advisoryBoards}
+            selected={filters.advisoryBoards || []}
             onChange={(value) =>
               setFilters({ ...filters, advisoryBoards: value })
             }

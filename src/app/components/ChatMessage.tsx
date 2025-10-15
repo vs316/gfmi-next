@@ -186,6 +186,7 @@ import { useState } from "react";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { MarkdownComponentProps } from "@/app/types/filters";
+import { Components } from "react-markdown";
 
 interface FileWithPreview extends File {
   id: string;
@@ -248,76 +249,76 @@ export const ChatMessage = ({ message }: ChatMessageProps) => {
   };
 
   // Custom markdown components for better styling
-  const markdownComponents = {
-    // Style headings
-    h1: ({ children }: MarkdownComponentProps) => (
-      <h1 className="text-xl font-bold mb-2 mt-4 first:mt-0">{children}</h1>
-    ),
-    h2: ({ children }: MarkdownComponentProps) => (
-      <h2 className="text-lg font-semibold mb-2 mt-3 first:mt-0">{children}</h2>
-    ),
-    h3: ({ children }: MarkdownComponentProps) => (
-      <h3 className="text-base font-medium mb-1 mt-2 first:mt-0">{children}</h3>
-    ),
-    // Style paragraphs
-    p: ({ children }: MarkdownComponentProps) => (
-      <p className="mb-2 last:mb-0">{children}</p>
-    ),
-    // Style lists
-    ul: ({ children }: MarkdownComponentProps) => (
-      <ul className="list-disc list-inside mb-2 space-y-1">{children}</ul>
-    ),
-    ol: ({ children }: MarkdownComponentProps) => (
-      <ol className="list-decimal list-inside mb-2 space-y-1">{children}</ol>
-    ),
-    li: ({ children }: MarkdownComponentProps) => (
-      <li className="text-sm">{children}</li>
-    ),
-    // Style code blocks
-    code: ({ inline, children }: MarkdownComponentProps) => {
-      if (inline) {
-        return (
-          <code className="bg-muted px-1 py-0.5 rounded text-sm font-mono">
-            {children}
-          </code>
-        );
-      }
+  const markdownComponents: Partial<Components> = {
+  // Style headings
+  h1: ({ children, ...props }) => (
+    <h1 className="text-xl font-bold mb-2 mt-4 first:mt-0" {...props}>{children}</h1>
+  ),
+  h2: ({ children, ...props }) => (
+    <h2 className="text-lg font-semibold mb-2 mt-3 first:mt-0" {...props}>{children}</h2>
+  ),
+  h3: ({ children, ...props }) => (
+    <h3 className="text-base font-medium mb-1 mt-2 first:mt-0" {...props}>{children}</h3>
+  ),
+  // Style paragraphs
+  p: ({ children, ...props }) => (
+    <p className="mb-2 last:mb-0" {...props}>{children}</p>
+  ),
+  // Style lists
+  ul: ({ children, ...props }) => (
+    <ul className="list-disc list-inside mb-2 space-y-1" {...props}>{children}</ul>
+  ),
+  ol: ({ children, ...props }) => (
+    <ol className="list-decimal list-inside mb-2 space-y-1" {...props}>{children}</ol>
+  ),
+  li: ({ children, ...props }) => (
+    <li className="text-sm" {...props}>{children}</li>
+  ),
+  // Style code blocks
+  code: ({ inline, children, ...props }: any) => {
+    if (inline) {
       return (
-        <pre className="bg-muted p-3 rounded-md overflow-x-auto mb-2">
-          <code className="text-sm font-mono">{children}</code>
-        </pre>
-      );
-    },
-    // Style blockquotes
-    blockquote: ({ children }: MarkdownComponentProps) => (
-      <blockquote className="border-l-4 border-muted-foreground/20 pl-4 italic mb-2">
-        {children}
-      </blockquote>
-    ),
-    // Style tables
-    table: ({ children }: MarkdownComponentProps) => (
-      <div className="overflow-x-auto mb-2">
-        <table className="min-w-full border-collapse border border-muted">
+        <code className="bg-muted px-1 py-0.5 rounded text-sm font-mono" {...props}>
           {children}
-        </table>
-      </div>
-    ),
-    th: ({ children }: MarkdownComponentProps) => (
-      <th className="border border-muted bg-muted/50 px-3 py-2 text-left font-medium">
+        </code>
+      );
+    }
+    return (
+      <pre className="bg-muted p-3 rounded-md overflow-x-auto mb-2">
+        <code className="text-sm font-mono" {...props}>{children}</code>
+      </pre>
+    );
+  },
+  // Style blockquotes
+  blockquote: ({ children, ...props }) => (
+    <blockquote className="border-l-4 border-muted-foreground/20 pl-4 italic mb-2" {...props}>
+      {children}
+    </blockquote>
+  ),
+  // Style tables
+  table: ({ children, ...props }) => (
+    <div className="overflow-x-auto mb-2">
+      <table className="min-w-full border-collapse border border-muted" {...props}>
         {children}
-      </th>
-    ),
-    td: ({ children }:MarkdownComponentProps) => (
-      <td className="border border-muted px-3 py-2">{children}</td>
-    ),
-    // Style strong and emphasis
-    strong: ({ children }: MarkdownComponentProps) => (
-      <strong className="font-semibold">{children}</strong>
-    ),
-    em: ({ children }: MarkdownComponentProps) => (
-      <em className="italic">{children}</em>
-    ),
-  };
+      </table>
+    </div>
+  ),
+  th: ({ children, ...props }) => (
+    <th className="border border-muted bg-muted/50 px-3 py-2 text-left font-medium" {...props}>
+      {children}
+    </th>
+  ),
+  td: ({ children, ...props }) => (
+    <td className="border border-muted px-3 py-2" {...props}>{children}</td>
+  ),
+  // Style strong and emphasis
+  strong: ({ children, ...props }) => (
+    <strong className="font-semibold" {...props}>{children}</strong>
+  ),
+  em: ({ children, ...props }) => (
+    <em className="italic" {...props}>{children}</em>
+  ),
+};
 
   return (
     <div
@@ -351,7 +352,7 @@ export const ChatMessage = ({ message }: ChatMessageProps) => {
           }`}
         >
           {/* Attachments */}
-          {message.files?.length > 0 && (
+          {message.files && message.files.length > 0 && (
             <div className="mb-3 space-y-2">
               {message.files.map((file, idx) => (
                 <div

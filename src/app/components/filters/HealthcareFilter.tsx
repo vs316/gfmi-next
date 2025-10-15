@@ -44,7 +44,7 @@ export const HealthcareFilter = ({
           </label>
           <MultiSelect
             options={specialtyOptions}
-            selected={filters.specialty}
+            selected={filters.specialty || []}
             onChange={(value) => setFilters({ ...filters, specialty: value })}
             placeholder="Search specialty..."
           />
@@ -56,7 +56,7 @@ export const HealthcareFilter = ({
           </label>
           <MultiSelect
             options={tierOptions}
-            selected={filters.tier}
+            selected={filters.tier || []}
             onChange={(value) => setFilters({ ...filters, tier: value })}
             placeholder="Search tier..."
           />
@@ -68,7 +68,7 @@ export const HealthcareFilter = ({
           </label>
           <MultiSelect
             options={practiceSettingOptions}
-            selected={filters.practiceSetting}
+            selected={filters.practiceSetting || []}
             onChange={(value) =>
               setFilters({ ...filters, practiceSetting: value })
             }

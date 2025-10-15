@@ -291,17 +291,20 @@ export const SurveyFilter = ({ filters, setFilters }: SurveyFilterProps) => {
   const { data: filterOptions, isLoading, error } = useFilterOptions();
 
   const surveyNameOptions = useMemo(() => 
-    filterOptions?.survey_names?.map(survey => ({
-      value: survey,
-      label: survey.length > 50 ? `${survey.substring(0, 50)}...` : survey
-    })) || [], [filterOptions?.survey_names]
+    filterOptions?.survey_names?.map((survey: { value: string; label: string }) => ({
+      value: survey.value,
+      label: survey.label?.length > 50 ? `${survey.label.substring(0, 50)}...` : survey.label
+    }))
+    .filter((opt: { value: any; label: any; })=>opt.value && opt.label ) || [],
+     [filterOptions?.survey_names]
   );
 
   const questionOptions = useMemo(() => 
-    filterOptions?.questions?.map(question => ({
-      value: question,
-      label: question.length > 60 ? `${question.substring(0, 60)}...` : question
-    })) || [], [filterOptions?.questions]
+    filterOptions?.questions?.map((question: { value: string; label: string }) => ({
+      value: question.value,
+      label: question.label?.length > 60 ? `${question.label.substring(0, 60)}...` : question.label
+    })).filter((opt: { value: any; label: any; }) => opt.value && opt.label)  || [],
+     [filterOptions?.questions]
   );
 
   if (isLoading) {

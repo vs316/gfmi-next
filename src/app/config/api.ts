@@ -60,7 +60,7 @@ export const fetchFromApi = async (endpoint: string, options?: any) => {
         return await mockApi.get(endpoint, options);
       } catch (mockError) {
         console.error('Both real and mock APIs failed:', { apiError, mockError });
-        throw new Error(`API unavailable: ${apiError.message}`);
+        throw new Error(`API unavailable: ${apiError instanceof Error ? apiError.message : 'Unknown error'}`);
       }
     }
     
@@ -82,7 +82,7 @@ export const getApiStatus = async () => {
     return {
       status: 'disconnected',
       source: 'none',
-      error: error.message,
+      error: error instanceof Error ? error.message : 'Unknown error',
       records: 0
     };
   }

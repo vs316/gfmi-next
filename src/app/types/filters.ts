@@ -1,31 +1,6 @@
-import { DateRange } from "react-day-picker";
 
 export interface Filters {
-  // GeographicFilter keys
-  region: string[];
-  country: string[];
-  state: string[];
-  province: string[];
-  city: string[];
-  // HealthcareFilter keys
-  specialty: string[];
-  tier: string[];
-  practiceSetting: string[];
-  // SurveyFilter keys
-  surveyQuestion: string[];
-  specificSurvey: string[];
-  // EventEngagementFilter keys
-  conferences: string[];
-  advisoryBoards: string[];
-  // TeamOrganizationFilter keys
-  teamOrg: string[];
-  nationalDirector: string[];
-  regionalDirector: string[];
-  msl: string[];
-  // TherapeuticFilter keys
-  therapeuticArea: string[];
-  tumourType: string[];
-  // DateRangeFilter key
+  // Date Range
   dateRange?: string;
   customDateRange?: {
     id: string;
@@ -39,7 +14,44 @@ export interface Filters {
     to: string;
     label: string;
   }>;
+  
+  // Team & Organization
+  teamOrg?: string[];
+  nationalDirector?: string[];
+  regionalDirector?: string[];
+  msl?: string[];
+  title?: string[];
+  department?: string[];
+  userType?: string[];
+  
+  // Geographic
+  region?: string[];
+  country?: string[];
+  territory?: string[];
+  state?: string[];
+  province?: string[];
+  city?: string[];
+  
+  // Survey
+  surveyName?: string[];
+  question?: string[];
+  specificSurvey?: string[];
+  surveyQuestion?: string[];
+  
+  // Therapeutic
+  therapeuticArea?: string[];
+  tumourType?: string[];
+  
+  // Healthcare
+  specialty?: string[];
+  tier?: string[];
+  practiceSetting?: string[];
+  
+  // Events & Engagement
+  conferences?: string[];
+  advisoryBoards?: string[];
 }
+
 
 export interface FilterProps {
   filters: Filters;

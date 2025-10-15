@@ -30,6 +30,12 @@
       "static/chunks/646.2487fd46faab413b.js"
     ]
   },
+  "app\\components\\ChatArea.tsx -> @/app/components/ExportChatButton": {
+    "id": 23662,
+    "files": [
+      "static/chunks/281.fbe8a49675df6f8f.js"
+    ]
+  },
   "app\\components\\ChatArea.tsx -> docx": {
     "id": 67863,
     "files": [
