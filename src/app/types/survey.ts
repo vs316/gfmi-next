@@ -32,34 +32,34 @@ export interface SurveyListResponse {
 }
 
 export interface SurveyFilters {
-  // Teams and Organizations
-  msl_name?: string;
-  title?: string;
-  department?: string;
-  user_type?: string;
+  // Teams and Organizations - Accept arrays for multiple selections
+  msl_name?: string | string[];
+  title?: string | string[];
+  department?: string | string[];
+  user_type?: string | string[];
   
-  // Geographic
-  region?: string;
-  country_geo_id?: string;
-  territory?: string;
+  // Geographic - Accept arrays for multiple selections
+  region?: string | string[];
+  country_geo_id?: string | string[];
+  territory?: string | string[];
   
-  // Medical
-  response?: string; // tumor type
-  product?: string;
+  // Medical - Accept arrays for multiple selections
+  response?: string | string[]; // tumor type
+  product?: string | string[];
   
-  // Healthcare provider (HCP)
-  account_name?: string;
-  company?: string;
-  name?: string;
-  usertype?: string;
+  // Healthcare provider (HCP) - Accept arrays for multiple selections
+  account_name?: string | string[];
+  company?: string | string[];
+  name?: string | string[];
+  usertype?: string | string[];
   
-  // Event & Engagement
-  channels?: string;
-  assignment_type?: string;
+  // Event & Engagement - Accept arrays for multiple selections
+  channels?: string | string[];
+  assignment_type?: string | string[];
   
-  // Surveys
-  survey_name?: string;
-  question?: string;
+  // Surveys - Accept arrays for multiple selections
+  survey_name?: string | string[];
+  question?: string; // Keep as single string for LIKE search
   
   // Pagination
   page?: number;
@@ -77,6 +77,7 @@ export interface ApiFilterOptions {
   regions: string[];
   countries: string[];
   territories: string[];
+  states: string[];
   
   // Medical
   tumor_types: string[];

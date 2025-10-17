@@ -30,6 +30,12 @@ export const DateRangeFilter = ({ filters, setFilters }: DateRangeFilterProps) =
       ...filters, 
       dateRange: "Custom", 
       customDateRange: customRange 
+      // customDateRange: {
+      //     id: customRange.id,
+      //     from: customFrom,
+      //     to: customTo,
+      //     label: customLabel || `${customFrom} to ${customTo}`,
+      //   },
     });
   };
 

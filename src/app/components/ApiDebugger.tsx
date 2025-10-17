@@ -92,7 +92,7 @@ export const ApiDebugger = () => {
         </div>
         
         <div>
-          <strong>API Base URL:</strong> {process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api/v1'}
+          <strong>API Base URL:</strong> {process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1'}
         </div>
         
         {filterData && (

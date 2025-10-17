@@ -6,13 +6,13 @@ export interface Filters {
     id: string;
     from: string;
     to: string;
-    label: string;
+    label?: string;
   } | null;
   savedCustomRanges?: Array<{
     id: string;
     from: string;
     to: string;
-    label: string;
+    label?: string;
   }>;
   
   // Team & Organization

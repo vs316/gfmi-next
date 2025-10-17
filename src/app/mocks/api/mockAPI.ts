@@ -22,9 +22,10 @@ export class MockApiClient {
   constructor() {
     // Enable mock when API_BASE_URL points to localhost or when explicitly enabled
     this.isEnabled = 
-      process.env.NEXT_PUBLIC_API_URL?.includes('localhost') ||
-      process.env.NEXT_PUBLIC_ENABLE_MOCKS === 'true' ||
-      process.env.NODE_ENV === 'development';
+      // process.env.NEXT_PUBLIC_API_URL?.includes('localhost') ||
+      process.env.NEXT_PUBLIC_ENABLE_MOCKS === 'true' 
+      // ||
+      // process.env.NODE_ENV === 'development';
   }
 
   async get(endpoint: string, params?: any) {
@@ -39,18 +40,40 @@ export class MockApiClient {
     if (Math.random() < 0.05) {
       throw new Error('Simulated network error');
     }
-
+    // for mock apis
+    // switch (endpoint) {
+    //   case '/api/health':
+    //     return mockHealthData;
+        
+    //   case '/api/filters':
+    //     return mockFilterOptions;
+        
+    //   case '/api/surveys':
+    //     return this.getFilteredSurveys(params);
+        
+    //   case '/api/status':
+    //     return {
+    //       status: 'active',
+    //       mockEnabled: this.isEnabled,
+    //       recordCount: completeMockSurveyData.length,
+    //       timestamp: new Date().toISOString()
+    //     };
+        
+    //   default:
+    //     throw new Error(`Mock endpoint not found: ${endpoint}`);
+    // }
+    // for real apis
     switch (endpoint) {
-      case '/api/health':
+      case '/health':
         return mockHealthData;
         
-      case '/api/filters':
+      case '/api/v1/filters':
         return mockFilterOptions;
         
-      case '/api/surveys':
+      case '/api/v1/surveys':
         return this.getFilteredSurveys(params);
         
-      case '/api/status':
+      case '/api/v1/status':
         return {
           status: 'active',
           mockEnabled: this.isEnabled,
@@ -59,8 +82,9 @@ export class MockApiClient {
         };
         
       default:
-        throw new Error(`Mock endpoint not found: ${endpoint}`);
+        throw new Error(`Real endpoint not found: ${endpoint}`);
     }
+
   }
 
   private getFilteredSurveys(filters: any = {}) {

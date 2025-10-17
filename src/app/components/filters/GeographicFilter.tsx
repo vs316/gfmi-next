@@ -217,7 +217,7 @@ export const GeographicFilter = ({
 
   // For territories, we can map to state for now since your current structure uses state
   const handleTerritoryChange = (values: string[]) => {
-    setFilters(prev => ({ ...prev, state: values }));
+    setFilters(prev => ({ ...prev, territory: values }));
   };
   const handleStateChange = (values: string[]) => {
     setFilters(prev => ({ ...prev, state: values }));
@@ -262,14 +262,14 @@ export const GeographicFilter = ({
           </label>
           <MultiSelect
             options={territoryOptions}
-            selected={filters.state || []} // Using state field for territories
+            selected={filters.territory || []} 
             onChange={handleTerritoryChange}
             placeholder="Search territory..."
           />
         </div>
 
         {/* Keep existing city and province fields for compatibility */}
-        {/* <div>
+        <div>
           <label className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1 block">
             State
           </label>
@@ -279,7 +279,7 @@ export const GeographicFilter = ({
             onChange={handleStateChange}
             placeholder="Search state..."
           />
-        </div> */}
+        </div>
         
         <div>
           <label className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1 block">

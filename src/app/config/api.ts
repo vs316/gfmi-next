@@ -1,11 +1,12 @@
 import { mockApi } from '@/app/mocks/api/mockAPI';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 const IS_DEV = process.env.NODE_ENV;
 const USE_MOCKS = 
-  process.env.NEXT_PUBLIC_ENABLE_MOCKS === 'true' || 
-  API_BASE_URL.includes('localhost') ||
-  process.env.NODE_ENV === 'development';
+  process.env.NEXT_PUBLIC_ENABLE_MOCKS === 'true' 
+  // || 
+  // API_BASE_URL.includes('localhost') ||
+  // process.env.NODE_ENV === 'development';
 
 export const apiConfig = {
   baseURL: API_BASE_URL,
@@ -14,7 +15,6 @@ export const apiConfig = {
   debugMode: process.env.NEXT_PUBLIC_DEBUG_MODE === 'true',
 };
 
-// Enhanced API utility with automatic mock fallback
 export const fetchFromApi = async (endpoint: string, options?: any) => {
   // If mocks are explicitly enabled, use them first
   if (USE_MOCKS) {
@@ -29,12 +29,13 @@ export const fetchFromApi = async (endpoint: string, options?: any) => {
   
   // Try real API
   try {
-    const url = IS_DEV ? `/api${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}` : `${API_BASE_URL}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
+    // Construct the URL - simply append endpoint to base URL
+    const url = `${API_BASE_URL}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
     
     console.log(`🌐 Trying real API: ${url}`);
     
     const response = await fetch(url, {
-      method: 'GET',
+      method: options?.method || 'GET',
       headers: {
         'Content-Type': 'application/json',
         ...options?.headers,
@@ -71,7 +72,7 @@ export const fetchFromApi = async (endpoint: string, options?: any) => {
 // Utility to check API status
 export const getApiStatus = async () => {
   try {
-    const health = await fetchFromApi('/api/health');
+    const health = await fetchFromApi('/health');
     return {
       status: 'connected',
       source: health.version?.includes('mock') ? 'mock' : 'real',

@@ -11,8 +11,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="system" storageKey="gfmi-theme">
         <TooltipProvider>
-          <Toaster position="bottom-right"/>
           {children}
+          <Toaster 
+          position="top-right" richColors
+          />
         </TooltipProvider>
       </ThemeProvider>
     </QueryClientProvider>
